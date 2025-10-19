@@ -34,7 +34,7 @@ def upload_pdf():
 @app.route("/ask", methods=["POST"])
 def ask():
     global qa_chain
-    query = request.json.get("query", "")
+    query = request.json.get("query", "").strip()
     if not query:
         return jsonify({"error": "Empty query"}), 400
 
@@ -42,15 +42,25 @@ def ask():
     try:
         if qa_chain is None:
             qa_chain = get_qa_chain()
-    except:
+    except Exception as e:
         return jsonify({"error": "No Uploaded Textbook!"}), 400
 
-    # Run query if we have a valid chain
-    result = qa_chain.invoke({"query": query})
+    # ✅ Add grounding instruction to reduce hallucination
+    grounded_query = (
+        "You are an assistant that strictly answers questions "
+        "based only on the provided textbook. "
+        "If the information is not found in the textbook, respond with: "
+        "'The answer is not available in the provided textbook.' "
+        f"\n\nQuestion: {query}"
+    )
+
+    # Run query through the RAG chain
+    result = qa_chain.invoke({"query": grounded_query})
     answer = result["result"]
     sources = [doc.page_content[:300] + "..." for doc in result["source_documents"]]
 
     return jsonify({"answer": answer, "sources": sources})
+
 
 
 if __name__ == "__main__":
