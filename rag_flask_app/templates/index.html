@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Textbook RAG Assistant</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-container">
+    <h1>📚 Textbook RAG Assistant</h1>
+    <p>Upload a PDF and ask questions based on its content!</p>
+
+    <form id="upload-form" enctype="multipart/form-data">
+      <div class="input-container">
+        <input type="file" id="pdf" name="pdf" accept="application/pdf" />
+      </div>
+      
+      <div class="button-container">
+        <button type="submit">Upload PDF</button>
+      </div>
+      
+    </form>
+
+    <div id="upload-status"></div>
+
+    <textarea id="query" placeholder="Ask something about your textbook..."></textarea>
+    <div class="button-container">
+        <button id="ask-btn">Ask</button>
+    </div>
+
+    <div id="response" class="response-box">
+      <h3>Answer:</h3>
+      <p id="answer"></p>
+
+      <h4>Sources:</h4>
+      <ul id="sources"></ul>
+    </div>
+  </div>
+
+  <script>
+    // Handle PDF upload
+    document.getElementById("upload-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById("pdf");
+      if (!fileInput.files.length) return alert("Please select a PDF.");
+
+      const formData = new FormData();
+      formData.append("pdf", fileInput.files[0]);
+
+      document.getElementById("upload-status").innerText = "📤 Uploading and indexing...";
+      const res = await fetch("/upload", { method: "POST", body: formData });
+      const data = await res.json();
+
+      document.getElementById("upload-status").innerText = data.message || data.error;
+    });
+
+    // Handle user query
+    document.getElementById("ask-btn").addEventListener("click", async () => {
+      const query = document.getElementById("query").value.trim();
+      if (!query) return alert("Please enter a question.");
+
+      document.getElementById("answer").innerText = "💭 Thinking...";
+      document.getElementById("sources").innerHTML = "";
+
+      const res = await fetch("/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
+      const data = await res.json();
+
+      document.getElementById("answer").innerText = data.answer || "No Uploaded Textbook.";
+      const sources = data.sources || [];
+      const ul = document.getElementById("sources");
+      sources.forEach((src) => {
+        const li = document.createElement("li");
+        li.innerText = src;
+        ul.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>

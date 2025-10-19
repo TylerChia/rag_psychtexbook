@@ -1,0 +1,83 @@
+body {
+    background: #0e1117;
+    color: #e8eaed;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .app-container {
+    max-width: 800px;
+    margin: 60px auto;
+    background: #1c1f26;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  
+  h1 {
+    text-align: center;
+    color: #4dabf7;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    text-align: center;
+    color: #b0b3b8;
+  }
+  
+  input[type="file"] {
+    color: #e8eaed;
+    margin-top: 15px;
+  }
+  
+  button {
+    background: #4dabf7;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+  }
+  .input-container {
+    text-align: center;
+  }
+  
+  .button-container {
+    text-align: center;
+  }
+
+  button:hover {
+    background: #3b8bd4;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 60px;
+    margin-top: 20px;
+    padding: 12px;
+    background: #2a2d35;
+    color: #e8eaed;
+    border: 1px solid #444;
+    border-radius: 8px;
+    font-size: 15px;
+    resize: none;
+  }
+  
+  .response-box {
+    background: #21242c;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 25px;
+    border: 1px solid #333;
+  }
+  
+  #sources li {
+    background: #2a2d35;
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 8px;
+  }
+  
