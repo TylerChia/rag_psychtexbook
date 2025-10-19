@@ -38,7 +38,7 @@ def ask():
     if not query:
         return jsonify({"error": "Empty query"}), 400
 
-    # 🧠 Try loading the QA chain safely
+    # Try loading the QA chain safely
     try:
         if qa_chain is None:
             qa_chain = get_qa_chain()

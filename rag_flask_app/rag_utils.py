@@ -33,7 +33,7 @@ def get_qa_chain():
     """Load vectorstore + LLM into a RetrievalQA pipeline."""
     embeddings = HuggingFaceEmbeddings(model_name=EMBED_MODEL)
 
-    # 🧠 Check if the vectorstore directory and required files exist
+    # Check if the vectorstore directory and required files exist
     if not os.path.exists(VECTOR_DIR):
         raise FileNotFoundError(
             f"❌ No vector store found at '{VECTOR_DIR}'. "
@@ -49,7 +49,7 @@ def get_qa_chain():
             f"Please re-run the PDF ingestion process."
         )
 
-    # ✅ Load FAISS and build the QA pipeline
+    # Load FAISS and build the QA pipeline
     db = FAISS.load_local(VECTOR_DIR, embeddings, allow_dangerous_deserialization=True)
     llm = OllamaLLM(model="llama3.2:latest")
 
